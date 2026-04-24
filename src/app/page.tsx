@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, Bookmark, Building2, Compass, FileText, Globe2, Image as ImageIcon, LayoutGrid, MapPin, ShieldCheck, Tag, User } from 'lucide-react'
+import { ArrowRight, Bookmark, BookOpen, Building2, Compass, FileText, Image as ImageIcon, LayoutGrid, MapPin, ShieldCheck, Sparkles, Tag, User, Users } from 'lucide-react'
 import { ContentImage } from '@/components/shared/content-image'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
@@ -39,10 +39,26 @@ const taskIcons: Record<TaskKey, any> = {
   classified: Tag,
   image: ImageIcon,
   profile: User,
+  pdf: FileText,
+  social: Users,
+  org: Building2,
+  comment: FileText,
 }
 
 function resolveTaskKey(value: unknown, fallback: TaskKey): TaskKey {
-  if (value === 'listing' || value === 'classified' || value === 'article' || value === 'image' || value === 'profile' || value === 'sbm') return value
+  if (
+    value === 'listing' ||
+    value === 'classified' ||
+    value === 'article' ||
+    value === 'image' ||
+    value === 'profile' ||
+    value === 'sbm' ||
+    value === 'pdf' ||
+    value === 'social' ||
+    value === 'org' ||
+    value === 'comment'
+  )
+    return value
   return fallback
 }
 
@@ -136,6 +152,199 @@ function getCurationTone() {
     action: 'bg-[#5b2b3b] text-[#fff0f5] hover:bg-[#74364b]',
     actionAlt: 'border border-[#ddcdbd] bg-transparent text-[#261811] hover:bg-[#efe3d6]',
   }
+}
+
+const docTone = {
+  shell: 'bg-[#f0f4ea] text-[#153234]',
+  hero: 'bg-[#e6eec9] border-b border-[#7da78c]/40',
+  panel: 'border-2 border-[#7da78c] bg-white/95 shadow-[0_20px_60px_rgba(21,50,52,0.1)]',
+  soft: 'border-2 border-[#c2d099] bg-white/60',
+  muted: 'text-[#3a5557]',
+  title: 'text-[#153234]',
+  accent: 'bg-[#35858e] text-[#f4faf9]',
+  accentLine: 'bg-[#35858e]',
+} as const
+
+function DocumentProfileHome({ primaryTask, enabledTasks, pdfPosts, profilePosts }: {
+  primaryTask?: EnabledTask
+  enabledTasks: EnabledTask[]
+  pdfPosts: SitePost[]
+  profilePosts: SitePost[]
+}) {
+  const shelf = pdfPosts.slice(0, 4)
+  const people = profilePosts.slice(0, 4)
+  const emphasis = [primaryTask, ...enabledTasks.filter((t) => t.key !== primaryTask?.key)].filter(Boolean) as EnabledTask[]
+
+  return (
+    <main>
+      <section className={docTone.hero}>
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div>
+              <span
+                className={`inline-flex items-center gap-2 rounded-full border border-[#35858e]/30 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0f2d2f]`}
+                style={{ background: 'rgb(194 208 153 / 0.5)' }}
+              >
+                <BookOpen className="h-3.5 w-3.5" />
+                PDF + social profile
+              </span>
+              <h1 className={`mt-7 max-w-3xl font-serif text-4xl font-semibold leading-[1.1] tracking-[-0.04em] sm:text-5xl lg:text-[3.1rem] ${docTone.title}`}>
+                A calm shelf for files and a friendly card for people.
+              </h1>
+              <p className={`mt-6 max-w-xl text-base leading-relaxed sm:text-lg ${docTone.muted}`}>{SITE_CONFIG.description}</p>
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <Link
+                  href={primaryTask?.route || '/pdf'}
+                  className={`inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-sm font-semibold shadow-sm transition hover:opacity-95 ${docTone.accent}`}
+                >
+                  {primaryTask?.label || 'PDF library'}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/profile"
+                  className={`inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#35858e] bg-white px-7 py-3.5 text-sm font-semibold text-[#153234] transition hover:bg-[#e6eec9]/60`}
+                >
+                  <Users className="h-4 w-4" />
+                  Social profiles
+                </Link>
+                <Link href="/search" className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-semibold ${docTone.muted} underline decoration-[#7da78c] underline-offset-4`}>
+                  Search
+                </Link>
+              </div>
+              {emphasis.length ? (
+                <div className="mt-10 flex flex-wrap gap-2">
+                  {emphasis.slice(0, 4).map((task) => {
+                    const Icon = taskIcons[task.key as TaskKey] || LayoutGrid
+                    return (
+                      <Link
+                        key={task.key}
+                        href={task.route}
+                        className="inline-flex items-center gap-2 rounded-full border border-[#7da78c]/50 bg-white/80 px-4 py-2 text-xs font-semibold text-[#153234] transition hover:border-[#35858e] hover:bg-white"
+                      >
+                        <Icon className="h-3.5 w-3.5" />
+                        {task.label}
+                      </Link>
+                    )
+                  })}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="relative">
+              <div className={`absolute -left-4 -top-4 h-24 w-24 rounded-3xl border-2 border-dashed border-[#7da78c]/50 opacity-50`} aria-hidden />
+              <div className={`grid gap-4 sm:grid-cols-2 ${docTone.panel} rounded-3xl p-6`}>
+                <div className="col-span-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#3a5557]">Preview stack</p>
+                  <p className="mt-1 text-lg font-semibold text-[#153234]">What visitors open first</p>
+                </div>
+                {shelf.length
+                  ? shelf.map((post, i) => (
+                      <Link
+                        key={post.id}
+                        href={getTaskHref('pdf', post.slug)}
+                        className={`group relative overflow-hidden rounded-2xl border-2 border-[#c2d099] bg-gradient-to-b from-white to-[#e6eec9]/40 p-4 transition duration-300 hover:-translate-y-0.5 hover:shadow-md`}
+                        style={{ marginTop: i > 0 ? 0 : 0 }}
+                      >
+                        <div
+                          className="absolute left-0 top-0 h-full w-1.5 rounded-full"
+                          style={{ background: 'rgb(53, 133, 142)' }}
+                        />
+                        <div className="pl-3">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#35858e]">PDF</p>
+                          <p className="mt-1 line-clamp-2 text-sm font-semibold text-[#153234] group-hover:underline">{post.title}</p>
+                        </div>
+                        <FileText className="absolute right-3 top-3 h-8 w-8 text-[#7da78c]/30 transition group-hover:text-[#35858e]/50" />
+                      </Link>
+                    ))
+                  : [0, 1, 2, 3].map((i) => (
+                      <div key={i} className="rounded-2xl border-2 border-dashed border-[#c2d099] bg-white/50 p-4 text-center text-xs text-[#3a5557]/80">
+                        PDF preview {i + 1}
+                        <div className="mt-2 h-12 rounded bg-[#e6eec9]/60" />
+                      </div>
+                    ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mb-10 flex flex-col justify-between gap-4 border-b-2 border-[#7da78c]/30 pb-8 sm:flex-row sm:items-end">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#3a5557]">File-first</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[#153234]">From the PDF library</h2>
+            <p className={`mt-2 max-w-xl text-sm ${docTone.muted}`}>Larger type, obvious “PDF” cues, and a rhythm meant for choosing the right document—not scrolling a generic feed.</p>
+          </div>
+          <Link href="/pdf" className="text-sm font-semibold text-[#35858e] underline-offset-4 hover:underline">
+            See all PDFs
+          </Link>
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {pdfPosts.length
+            ? pdfPosts.slice(0, 3).map((post) => (
+                <TaskPostCard key={post.id} post={post} href={getTaskHref('pdf', post.slug)} taskKey="pdf" />
+              ))
+            : (
+                <p className={`col-span-full rounded-2xl border-2 border-dashed border-[#7da78c] bg-white/60 px-6 py-10 text-center text-sm ${docTone.muted}`}>
+                  No PDFs in the feed yet. When files are published, they will use the document-shelf card style here.
+                </p>
+              )}
+        </div>
+      </section>
+
+      <section className={`${docTone.shell} border-t border-[#7da78c]/25`}>
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#3a5557]">People-first</p>
+              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[#153234]">Social profile cards</h2>
+              <p className={`mt-2 max-w-xl text-sm ${docTone.muted}`}>
+                A different surface than the PDF grid: round portraits, two-line bios, and connection cues—so “who is sharing this?” is always obvious.
+              </p>
+            </div>
+            <Link href="/profile" className="text-sm font-semibold text-[#35858e] underline-offset-4 hover:underline">
+              Open profiles
+            </Link>
+          </div>
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {people.length
+              ? people.map((post) => (
+                  <TaskPostCard key={post.id} post={post} href={getTaskHref('profile', post.slug)} taskKey="profile" />
+                ))
+              : (
+                <div className={`col-span-full rounded-3xl border-2 border-[#7da78c] bg-white p-8 text-center md:col-span-2 ${docTone.muted}`}>
+                  <Users className="mx-auto h-10 w-10 text-[#7da78c]" />
+                  <p className="mt-3 text-sm font-medium text-[#153234]">Profile posts will appear here when available.</p>
+                </div>
+                )}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-[#7da78c]/20 bg-white/70">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className={`${docTone.soft} mx-auto max-w-4xl rounded-3xl p-8 sm:p-10`}>
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#3a5557]">Clarity, not noise</p>
+                <h3 className="mt-2 text-2xl font-semibold text-[#153234]">Same platform tasks—tuned for documents and public presence.</h3>
+                <p className={`mt-3 text-sm leading-relaxed ${docTone.muted}`}>
+                  You can still reach other content types from search and direct links; the homepage keeps the story simple: files here, people here.
+                </p>
+              </div>
+              <Link
+                href="/register"
+                className={`inline-flex shrink-0 items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-white shadow transition hover:opacity-95 ${docTone.accent}`}
+              >
+                <Sparkles className="h-4 w-4" />
+                Join Nubsant
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  )
 }
 
 function DirectoryHome({ primaryTask, enabledTasks, listingPosts, classifiedPosts, profilePosts, brandPack }: {
@@ -247,14 +456,14 @@ function DirectoryHome({ primaryTask, enabledTasks, listingPosts, classifiedPost
           <div className="grid gap-4 md:grid-cols-2">
             {(profilePosts.length ? profilePosts : classifiedPosts).slice(0, 4).map((post) => {
               const meta = getPostMeta(post)
-              const taskKey = resolveTaskKey(post.task, profilePosts.length ? 'profile' : 'classified')
+              const taskKey = resolveTaskKey((post as { task?: string }).task, profilePosts.length ? 'profile' : 'classified')
               return (
                 <Link key={post.id} href={getTaskHref(taskKey, post.slug)} className={`overflow-hidden rounded-[1.8rem] ${tone.panel}`}>
                   <div className="relative h-44 overflow-hidden">
                     <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
                   </div>
                   <div className="p-5">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] opacity-70">{meta.category || post.task || 'Profile'}</p>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] opacity-70">{meta.category || (post as { task?: string }).task || 'Profile'}</p>
                     <h3 className="mt-2 text-xl font-semibold">{post.title}</h3>
                     <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{post.summary || 'Quick access to local information and related surfaces.'}</p>
                   </div>
@@ -375,7 +584,7 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
             {gallery.slice(0, 5).map((post, index) => (
               <Link
                 key={post.id}
-                href={getTaskHref(resolveTaskKey(post.task, 'image'), post.slug)}
+                href={getTaskHref(resolveTaskKey((post as { task?: string }).task, 'image'), post.slug)}
                 className={index === 0 ? `col-span-2 row-span-2 overflow-hidden rounded-[2.4rem] ${tone.panel}` : `overflow-hidden rounded-[1.8rem] ${tone.soft}`}
               >
                 <div className={index === 0 ? 'relative h-[360px]' : 'relative h-[170px]'}>
@@ -440,7 +649,7 @@ function CurationHome({ primaryTask, bookmarkPosts, profilePosts, articlePosts }
 
           <div className="grid gap-4 md:grid-cols-2">
             {collections.map((post) => (
-              <Link key={post.id} href={getTaskHref(resolveTaskKey(post.task, 'sbm'), post.slug)} className={`rounded-[1.8rem] p-6 ${tone.panel}`}>
+              <Link key={post.id} href={getTaskHref(resolveTaskKey((post as { task?: string }).task, 'sbm'), post.slug)} className={`rounded-[1.8rem] p-6 ${tone.panel}`}>
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Collection</p>
                 <h3 className="mt-3 text-2xl font-semibold">{post.title}</h3>
                 <p className={`mt-3 text-sm leading-8 ${tone.muted}`}>{post.summary || 'A calmer bookmark surface with room for context and grouping.'}</p>
@@ -496,6 +705,7 @@ export default async function HomePage() {
   const articlePosts = taskFeed.find(({ task }) => task.key === 'article')?.posts || []
   const imagePosts = taskFeed.find(({ task }) => task.key === 'image')?.posts || []
   const profilePosts = taskFeed.find(({ task }) => task.key === 'profile')?.posts || []
+  const pdfPosts = taskFeed.find(({ task }) => task.key === 'pdf')?.posts || []
   const bookmarkPosts = taskFeed.find(({ task }) => task.key === 'sbm')?.posts || []
 
   const schemaData = [
@@ -524,6 +734,14 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <NavbarShell />
       <SchemaJsonLd data={schemaData} />
+      {productKind === 'document' ? (
+        <DocumentProfileHome
+          primaryTask={primaryTask}
+          enabledTasks={enabledTasks}
+          pdfPosts={pdfPosts}
+          profilePosts={profilePosts}
+        />
+      ) : null}
       {productKind === 'directory' ? (
         <DirectoryHome
           primaryTask={primaryTask}

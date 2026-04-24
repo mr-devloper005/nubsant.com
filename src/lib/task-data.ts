@@ -50,9 +50,15 @@ export const fetchTaskPosts = async (
   };
 
   try {
-    const cachedFeed = await fetchSiteFeed(limit * 6, { fresh: options?.fresh });
-    const cachedPosts = pickTaskPosts(cachedFeed);
-    if (cachedPosts.length) return cachedPosts;
+    const firstFeed = await fetchSiteFeed(limit * 6, { fresh: options?.fresh });
+    const firstPosts = pickTaskPosts(firstFeed);
+    if (firstPosts.length) return firstPosts;
+
+    // When the caller already asked for a fresh (no-store) request, a second
+    // `fresh: true` fetch is redundant and doubles timeout wait on failures.
+    if (options?.fresh) {
+      return allowMockFallback ? getMockPostsForTask(task).slice(0, limit) : [];
+    }
 
     const freshFeed = await fetchSiteFeed(limit * 6, { fresh: true });
     const filtered = pickTaskPosts(freshFeed);

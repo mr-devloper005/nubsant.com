@@ -1,4 +1,4 @@
-import { Building2, FileText, Image as ImageIcon, Mail, MapPin, Phone, Sparkles, Bookmark } from 'lucide-react'
+import { Building2, FileText, Image as ImageIcon, Mail, MapPin, Phone, Sparkles, Bookmark, User } from 'lucide-react'
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { SITE_CONFIG } from '@/lib/site-config'
@@ -32,6 +32,15 @@ function getTone(kind: ReturnType<typeof getProductKind>) {
       soft: 'border border-white/10 bg-white/5',
       muted: 'text-slate-300',
       action: 'bg-[#8df0c8] text-[#07111f] hover:bg-[#77dfb8]',
+    }
+  }
+  if (kind === 'document') {
+    return {
+      shell: 'bg-[#e6eec9] text-[#153234]',
+      panel: 'border-2 border-[#7da78c] bg-white',
+      soft: 'border-2 border-[#c2d099] bg-[#f4f7f0]',
+      muted: 'text-[#3a5557]',
+      action: 'bg-[#35858e] text-white hover:bg-[#2a6d75]',
     }
   }
   return {
@@ -70,11 +79,17 @@ export default function ContactPage() {
               { icon: Sparkles, title: 'Licensing and use', body: 'Reach out about usage rights, commercial requests, and visual partnerships.' },
               { icon: Mail, title: 'Media kits', body: 'Request creator decks, editorial support, or visual feature placement.' },
             ]
-          : [
-              { icon: Bookmark, title: 'Collection submissions', body: 'Suggest resources, boards, and links that deserve a place in the library.' },
-              { icon: Mail, title: 'Resource partnerships', body: 'Coordinate curation projects, reference pages, and link programs.' },
-              { icon: Sparkles, title: 'Curator support', body: 'Need help organizing shelves, collections, or profile-connected boards?' },
-            ]
+          : productKind === 'document'
+            ? [
+                { icon: FileText, title: 'PDF publishing', body: 'Questions about uploads, file presentation, or how documents appear in the reading room.' },
+                { icon: User, title: 'Profile & identity', body: 'Help with public bios, avatars, and how your social profile pairs with shared PDFs.' },
+                { icon: Mail, title: 'Partnerships', body: 'Teams, educators, and organizations using Nubsant for shared reading and presence.' },
+              ]
+            : [
+                { icon: Bookmark, title: 'Collection submissions', body: 'Suggest resources, boards, and links that deserve a place in the library.' },
+                { icon: Mail, title: 'Resource partnerships', body: 'Coordinate curation projects, reference pages, and link programs.' },
+                { icon: Sparkles, title: 'Curator support', body: 'Need help organizing shelves, collections, or profile-connected boards?' },
+              ]
 
   return (
     <div className={`min-h-screen ${tone.shell}`}>

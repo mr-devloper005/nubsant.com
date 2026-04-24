@@ -79,6 +79,18 @@ const cardStyles = {
     title: 'text-[#1f2617]',
     badge: 'bg-[#1f2617] text-[#edf5dc]',
   },
+  'document-shelf': {
+    frame: 'rounded-[1.4rem] border-2 border-[#7da78c] bg-gradient-to-b from-white to-[#e6eec9]/50 shadow-[0_12px_40px_rgba(21,50,52,0.1)] hover:-translate-y-1 hover:shadow-[0_20px_55px_rgba(21,50,52,0.14)]',
+    muted: 'text-[#3a5557]',
+    title: 'text-[#153234]',
+    badge: 'bg-[#35858e] text-white',
+  },
+  'profile-identity': {
+    frame: 'rounded-[1.75rem] border-2 border-[#c2d099] bg-white shadow-[0_14px_45px_rgba(53,133,142,0.1)] hover:-translate-y-1 hover:border-[#35858e] hover:shadow-[0_22px_55px_rgba(53,133,142,0.14)]',
+    muted: 'text-[#3a5557]',
+    title: 'text-[#153234]',
+    badge: 'bg-[#e0ebd8] text-[#153234] border border-[#7da78c]/50',
+  },
 } as const
 
 const getVariantForTask = (taskKey: TaskKey) => SITE_THEME.cards[taskKey] || 'listing-elevated'
@@ -112,7 +124,9 @@ export function TaskPostCard({
 
   const { recipe } = getFactoryState()
   const isDirectoryProduct = recipe.homeLayout === 'listing-home' || recipe.homeLayout === 'classified-home'
-  const isDirectorySurface = isDirectoryProduct && (variant === 'listing' || variant === 'classified' || variant === 'profile')
+  const isDirectorySurface =
+    isDirectoryProduct &&
+    (variant === 'listing' || variant === 'classified' || (variant === 'profile' && recipe.primaryTask === 'listing'))
 
   if (isDirectorySurface) {
     const cardTone = recipe.brandPack === 'market-utility'
@@ -156,6 +170,54 @@ export function TaskPostCard({
             {content.email ? <span className={`inline-flex items-center gap-1 ${cardTone.muted}`}><Mail className="h-3.5 w-3.5" />{content.email}</span> : null}
           </div>
           <div className={`mt-auto pt-5 text-sm font-semibold ${cardTone.cta}`}>{variant === 'classified' ? 'View offer' : 'View details'}</div>
+        </div>
+      </Link>
+    )
+  }
+
+  const layoutId = getVariantForTask(variant)
+  if (layoutId === 'document-shelf' && !isDirectorySurface) {
+    return (
+      <Link href={href} className={`group flex h-full flex-col overflow-hidden ${visualVariant.frame}`}>
+        <div className="relative flex h-40 flex-col justify-between bg-[#e6eec9]/60 px-4 pb-3 pt-4">
+          <div
+            className="absolute left-0 top-0 h-full w-1.5 rounded-r-md bg-[#35858e] transition group-hover:w-2"
+            aria-hidden
+          />
+          <span className="ml-3 inline-flex w-fit items-center gap-1 rounded-md px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.2em] text-white" style={{ background: 'rgb(53, 133, 142)' }}>
+            <FileText className="h-3 w-3" />
+            PDF
+          </span>
+            <div className="ml-3 h-20 rounded-md border-2 border-white bg-white/90 shadow-inner">
+            <div className="mx-2 mt-2 h-1.5 w-[75%] rounded-sm bg-[#c2d099]/80" />
+            <div className="mx-2 mt-1.5 h-1.5 w-1/2 rounded-sm bg-[#7da78c]/40" />
+            <div className="mx-2 mt-1.5 h-1.5 w-2/3 rounded-sm bg-[#7da78c]/30" />
+          </div>
+        </div>
+        <div className="flex flex-1 flex-col p-4">
+          <h3 className={`line-clamp-2 text-lg font-semibold leading-snug ${visualVariant.title}`}>{post.title}</h3>
+          <p className={`mt-2 line-clamp-2 text-sm leading-relaxed ${visualVariant.muted}`}>{getExcerpt(content.description || post.summary) || 'Open the document.'}</p>
+          <span className="mt-3 text-xs font-semibold text-[#35858e]">Open file →</span>
+        </div>
+      </Link>
+    )
+  }
+
+  if (layoutId === 'profile-identity' && !isDirectorySurface) {
+    return (
+      <Link href={href} className={`group flex h-full flex-row gap-4 overflow-hidden p-4 sm:p-5 ${visualVariant.frame}`}>
+        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border-2 border-[#7da78c] bg-[#e6eec9] sm:h-24 sm:w-24">
+          <ContentImage src={image} alt={altText} fill sizes="120px" className="object-cover" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <span className={`inline-flex items-center gap-1 rounded-md px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] ${visualVariant.badge}`}>
+            {category}
+          </span>
+          <h3 className={`mt-2 line-clamp-2 text-lg font-semibold leading-snug sm:text-xl ${visualVariant.title}`}>{post.title}</h3>
+          <p className={`mt-1.5 line-clamp-2 text-sm leading-relaxed ${visualVariant.muted}`}>
+            {getExcerpt(content.description || post.summary, 110) || 'View public profile and links.'}
+          </p>
+          <p className="mt-2 text-xs font-semibold text-[#35858e]">View profile</p>
         </div>
       </Link>
     )

@@ -43,6 +43,18 @@ function getRegisterConfig(kind: ReturnType<typeof getProductKind>) {
       body: 'Launch a visual-first account with gallery publishing, identity surfaces, and profile-led discovery.',
     }
   }
+  if (kind === 'document') {
+    return {
+      shell: 'bg-[#e6eec9] text-[#153234]',
+      panel: 'border-2 border-[#7da78c] bg-white',
+      side: 'border-2 border-[#c2d099] bg-white/70',
+      muted: 'text-[#3a5557]',
+      action: 'bg-[#35858e] text-white hover:bg-[#2a6d75]',
+      icon: FileText,
+      title: 'Create your Nubsant account',
+      body: 'Share PDFs in the reading room and present a clear social profile so people can connect files to faces.',
+    }
+  }
   return {
     shell: 'bg-[#f7f1ea] text-[#261811]',
     panel: 'border border-[#ddcdbd] bg-[#fffaf4]',

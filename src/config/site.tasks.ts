@@ -33,9 +33,9 @@ export const siteTaskDefinitions = [
   },
   {
     key: 'profile',
-    label: 'Profiles',
+    label: 'Social profiles',
     route: '/profile',
-    description: 'Creator and business profiles.',
+    description: 'Public bios, faces, and links in a social-style card.',
     contentType: 'profile',
     enabled: true,
   },
@@ -57,9 +57,9 @@ export const siteTaskDefinitions = [
   },
   {
     key: 'pdf',
-    label: 'PDF Library',
+    label: 'PDF library',
     route: '/pdf',
-    description: 'PDF resources and downloads.',
+    description: 'Read and share PDFs in a clear file-first layout.',
     contentType: 'pdf',
     enabled: true,
   },

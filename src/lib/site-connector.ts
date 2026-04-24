@@ -74,7 +74,14 @@ async function fetchPublicJson<T>(path: string, options?: { fresh?: boolean }): 
     return json.data || null;
   } catch (error) {
     if (process.env.NODE_ENV !== "production") {
-      console.warn("Public connector request failed", error);
+      const name = error instanceof Error ? error.name : "Error";
+      const isTimeout =
+        name === "TimeoutError" ||
+        name === "AbortError" ||
+        (error instanceof Error && /timeout|aborted/i.test(error.message));
+      console.warn(
+        `[site-connector] ${isTimeout ? "Request timed out" : "Request failed"} for ${path} (${name})`
+      );
     }
     return null;
   }

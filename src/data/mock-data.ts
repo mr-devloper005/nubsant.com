@@ -754,28 +754,28 @@ export const mockDashboardStats: DashboardStats = {
 export const mockTeamMembers: TeamMember[] = [
   {
     id: 'team-1',
-    name: 'Avery Brooks',
-    role: 'Head of Community',
-    avatar: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=200&h=200&fit=crop',
-    bio: 'Building programs that connect creators with meaningful collaborations.',
-    location: 'Austin, TX'
+    name: 'Mira Kulkarni',
+    role: 'Founder & document experience',
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop',
+    bio: 'Former library-tech lead; now shaping how PDFs are presented so readers can trust what they open.',
+    location: 'Portland, OR',
   },
   {
     id: 'team-2',
-    name: 'Jordan Lee',
-    role: 'Product Lead',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop',
-    bio: 'Designing calm, curated experiences for modern teams.',
-    location: 'San Francisco, CA'
+    name: 'Noah Ellison',
+    role: 'Product & profile design',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop',
+    bio: 'Designs the social profile surfaces and keeps file-first browsing and people-first cards visually distinct.',
+    location: 'Toronto, ON',
   },
   {
     id: 'team-3',
-    name: 'Priya Desai',
-    role: 'Engineering',
-    avatar: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=200&h=200&fit=crop',
-    bio: 'Focused on reliability, search, and delightful performance.',
-    location: 'New York, NY'
-  }
+    name: 'Sofia Varga',
+    role: 'Engineering & performance',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop',
+    bio: 'Makes search and PDF delivery stay fast on mobile while keeping the lagoon palette accessible.',
+    location: 'Barcelona, ES',
+  },
 ]
 
 export const mockCommunityEvents: CommunityEvent[] = [

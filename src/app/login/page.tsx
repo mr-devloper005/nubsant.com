@@ -43,6 +43,18 @@ function getLoginConfig(kind: ReturnType<typeof getProductKind>) {
       body: 'Open your visual feed, creator profile, and publishing tools without dropping into a generic admin shell.',
     }
   }
+  if (kind === 'document') {
+    return {
+      shell: 'bg-[#e6eec9] text-[#153234]',
+      panel: 'border-2 border-[#7da78c] bg-white',
+      side: 'border-2 border-[#c2d099] bg-white/70',
+      muted: 'text-[#3a5557]',
+      action: 'bg-[#35858e] text-white hover:bg-[#2a6d75]',
+      icon: FileText,
+      title: 'Sign in to your library & profile',
+      body: 'Manage uploaded PDFs, tune your public social profile, and keep both experiences under one account.',
+    }
+  }
   return {
     shell: 'bg-[#f7f1ea] text-[#261811]',
     panel: 'border border-[#ddcdbd] bg-[#fffaf4]',

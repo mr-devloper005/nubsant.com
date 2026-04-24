@@ -8,48 +8,48 @@ import { mockTeamMembers } from "@/data/mock-data";
 import { SITE_CONFIG } from "@/lib/site-config";
 
 const highlights = [
-  { label: "Creators onboarded", value: "12k+" },
-  { label: "Bookmarks shared", value: "180k" },
-  { label: "Listings published", value: "8.6k" },
+  { label: "PDFs indexed for reading", value: "2.1k+" },
+  { label: "Public profiles", value: "480+" },
+  { label: "Monthly opens", value: "31k" },
 ];
 
 const values = [
-  { title: "Curated by people", description: "We believe trusted recommendations beat endless feeds." },
-  { title: "Designed for focus", description: "Clear, calm UI helps you find the next best resource fast." },
-  { title: "Built to share", description: "Collections make collaboration and knowledge flow effortless." },
+  { title: "Clarity for files", description: "We keep PDF browsing calm and legible so titles and open actions stay obvious in every viewport." },
+  { title: "People in context", description: "Social profiles are designed to sit next to documents, not compete with them as a second feed." },
+  { title: "Color with purpose", description: "A lagoon-and-sage palette helps navigation and trust cues without cheap gradients or neon noise." },
 ];
 
 export default function AboutPage() {
   return (
     <PageShell
       title={`About ${SITE_CONFIG.name}`}
-      description={`${SITE_CONFIG.name} is a modern platform for creators, communities, and curated business discovery.`}
+      description={`${SITE_CONFIG.name} helps you share PDFs in a reading-first layout and present a public social profile on the same site.`}
       actions={
         <>
           <Button variant="outline" asChild>
-            <Link href="/team">Meet the Team</Link>
+            <Link href="/pdf">PDF library</Link>
           </Button>
           <Button asChild>
-            <Link href="/contact">Contact Us</Link>
+            <Link href="/contact">Contact</Link>
           </Button>
         </>
       }
     >
       <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <Card className="border-border bg-card">
+        <Card className="border-2 border-[#7da78c] bg-white/90">
           <CardContent className="space-y-4 p-6">
-            <Badge variant="secondary">Our Story</Badge>
+            <Badge className="border border-[#35858e]/30 bg-[#e6eec9] text-[#153234]">Our story</Badge>
             <h2 className="text-2xl font-semibold text-foreground">
-              A single home for knowledge, discovery, and community.
+              A small team focused on documents and identity—not another generic “platform.”
             </h2>
             <p className="text-sm text-muted-foreground">
-              {SITE_CONFIG.name} brings together publishing, listings, and social bookmarking so teams can move faster
-              and keep their best resources close.
+              {SITE_CONFIG.name} was started so readers can find long-form files without wading through unrelated post types, and so authors can show who they are
+              in a social-style profile card. We keep the technology stack from the shared base system; the experience here is purpose-built for PDFs + presence.
             </p>
             <div className="grid gap-4 sm:grid-cols-3">
               {highlights.map((item) => (
-                <div key={item.label} className="rounded-lg border border-border bg-secondary/40 p-4">
-                  <div className="text-2xl font-semibold text-foreground">{item.value}</div>
+                <div key={item.label} className="rounded-xl border-2 border-[#c2d099] bg-[#f4f7f0] p-4">
+                  <div className="text-2xl font-semibold text-[#153234]">{item.value}</div>
                   <div className="text-xs text-muted-foreground">{item.label}</div>
                 </div>
               ))}
@@ -58,7 +58,7 @@ export default function AboutPage() {
         </Card>
         <div className="space-y-4">
           {values.map((value) => (
-            <Card key={value.title} className="border-border bg-card">
+            <Card key={value.title} className="border-2 border-[#c2d099] bg-white/80">
               <CardContent className="p-6">
                 <h3 className="text-lg font-semibold text-foreground">{value.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{value.description}</p>
@@ -70,10 +70,10 @@ export default function AboutPage() {
 
       <div className="mt-10 grid gap-6 md:grid-cols-3">
         {mockTeamMembers.map((member) => (
-          <Card key={member.id} className="border-border bg-card transition-transform hover:-translate-y-1">
+          <Card key={member.id} className="border-2 border-[#7da78c] bg-white transition-transform hover:-translate-y-0.5">
             <CardContent className="p-6">
               <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12">
+                <Avatar className="h-12 w-12 border-2 border-[#c2d099]">
                   <AvatarImage src={member.avatar} alt={member.name} />
                   <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
                 </Avatar>
