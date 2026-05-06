@@ -97,7 +97,16 @@ export function Navbar() {
   const { isAuthenticated } = useAuth()
   const { recipe } = getFactoryState()
 
-  const navigation = useMemo(() => SITE_CONFIG.tasks.filter((task) => task.enabled && task.key !== 'profile'), [])
+  const navigation = useMemo(() => {
+    const enabled = SITE_CONFIG.tasks.filter((task) => task.enabled)
+    return [...enabled].sort((a, b) => {
+      if (a.key === recipe.primaryTask) return -1
+      if (b.key === recipe.primaryTask) return 1
+      if (a.key === 'profile' && recipe.primaryTask === 'pdf') return -1
+      if (b.key === 'profile' && recipe.primaryTask === 'pdf') return 1
+      return 0
+    })
+  }, [recipe.primaryTask])
   const primaryNavigation = navigation.slice(0, 5)
   const mobileNavigation = navigation.map((task) => ({
     name: task.label,
@@ -106,6 +115,114 @@ export function Navbar() {
   }))
   const primaryTask = SITE_CONFIG.tasks.find((task) => task.key === recipe.primaryTask && task.enabled) || primaryNavigation[0]
   const isDirectoryProduct = recipe.homeLayout === 'listing-home' || recipe.homeLayout === 'classified-home'
+  const isDocumentShell = recipe.primaryTask === 'pdf'
+
+  if (isDocumentShell) {
+    return (
+      <header className="sticky top-0 z-50 w-full border-b-2 border-[#7da78c] bg-[#f7faf3]/90 text-[#153234] backdrop-blur-xl">
+        <nav className="mx-auto flex min-h-[4.5rem] max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-2 sm:px-6 lg:px-8">
+          <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-5">
+            <Link href="/" className="flex shrink-0 items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl border-2 border-[#35858e] bg-white p-1.5 shadow-sm">
+                <img src="/favicon.png?v=20260424" alt={`${SITE_CONFIG.name} logo`} width="44" height="44" className="h-full w-full object-contain" />
+              </div>
+              <div className="min-w-0">
+                <span className="block truncate font-serif text-lg font-semibold leading-tight">{SITE_CONFIG.name}</span>
+                <span className="block text-[9px] font-semibold uppercase tracking-[0.28em] text-[#3a5557]">{siteContent.navbar.tagline}</span>
+              </div>
+            </Link>
+            <span className="hidden h-8 w-px bg-[#7da78c]/50 sm:block" aria-hidden />
+            <div className="hidden min-w-0 items-center gap-1 md:flex">
+              {primaryNavigation.map((task) => {
+                const Icon = taskIcons[task.key] || LayoutGrid
+                const isActive = pathname.startsWith(task.route)
+                return (
+                  <Link
+                    key={task.key}
+                    href={task.route}
+                    className={cn(
+                      'flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold transition-colors',
+                      isActive
+                        ? 'bg-[#35858e] text-white shadow-sm'
+                        : 'text-[#1a3a3d] hover:bg-[#e6eec9]/80',
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {task.label}
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            {primaryTask ? (
+              <Link
+                href={primaryTask.route}
+                className="hidden items-center gap-1.5 rounded-full border border-[#c2d099] bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#153234] md:inline-flex"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-[#35858e]" aria-hidden />
+                Primary: {primaryTask.label}
+              </Link>
+            ) : null}
+            <Button variant="ghost" size="icon" asChild className="rounded-full text-[#153234]">
+              <Link href="/search">
+                <Search className="h-5 w-5" />
+                <span className="sr-only">Search</span>
+              </Link>
+            </Button>
+            {isAuthenticated ? (
+              <NavbarAuthControls />
+            ) : (
+              <div className="hidden items-center gap-1.5 sm:flex">
+                <Button variant="ghost" size="sm" asChild className="rounded-full text-[#153234]">
+                  <Link href="/login">Sign in</Link>
+                </Button>
+                <Button size="sm" asChild className="rounded-full bg-[#35858e] text-white hover:bg-[#2a6d75]">
+                  <Link href="/register">Join</Link>
+                </Button>
+              </div>
+            )}
+            <Button variant="ghost" size="icon" className="rounded-full text-[#153234] md:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
+        </nav>
+
+        {isMobileMenuOpen && (
+          <div className="border-t border-[#7da78c]/40 bg-[#f0f4ea] md:hidden">
+            <div className="space-y-1 px-4 py-3">
+              <Link
+                href="/search"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="mb-2 flex items-center gap-3 rounded-2xl border border-[#7da78c] bg-white px-4 py-3 text-sm font-semibold"
+              >
+                <Search className="h-4 w-4" />
+                Search PDFs, profiles, and more
+              </Link>
+              {mobileNavigation.map((item) => {
+                const isActive = pathname.startsWith(item.href)
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      'flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors',
+                      isActive ? 'bg-[#35858e] text-white' : 'bg-white/80 text-[#153234] hover:bg-white',
+                    )}
+                  >
+                    <item.icon className="h-5 w-5" />
+                    {item.name}
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        )}
+      </header>
+    )
+  }
 
   if (isDirectoryProduct) {
     const palette = directoryPalette[(recipe.brandPack === 'market-utility' ? 'market-utility' : 'directory-clean') as keyof typeof directoryPalette]
@@ -116,7 +233,7 @@ export function Navbar() {
           <div className="flex min-w-0 items-center gap-4">
             <Link href="/" className="flex shrink-0 items-center gap-3">
               <div className={cn('flex h-12 w-12 items-center justify-center overflow-hidden p-1.5', palette.logo)}>
-                <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
+                <img src="/favicon.png?v=20260424" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
               </div>
               <div className="min-w-0 hidden sm:block">
                 <span className="block truncate text-xl font-semibold">{SITE_CONFIG.name}</span>
@@ -211,7 +328,7 @@ export function Navbar() {
         <div className="flex min-w-0 flex-1 items-center gap-4 lg:gap-7">
           <Link href="/" className="flex shrink-0 items-center gap-3 whitespace-nowrap pr-2">
             <div className={cn('flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden p-1.5', style.logo)}>
-              <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
+              <img src="/favicon.png?v=20260424" alt={`${SITE_CONFIG.name} logo`} width="48" height="48" className="h-full w-full object-contain" />
             </div>
             <div className="min-w-0 hidden sm:block">
               <span className="block truncate text-xl font-semibold">{SITE_CONFIG.name}</span>

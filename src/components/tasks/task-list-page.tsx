@@ -37,6 +37,8 @@ const variantShells = {
   'classified-market': 'bg-[linear-gradient(180deg,#f4f6ef_0%,#ffffff_100%)]',
   'sbm-curation': 'bg-[linear-gradient(180deg,#fff7ee_0%,#ffffff_100%)]',
   'sbm-library': 'bg-[linear-gradient(180deg,#f7f8fc_0%,#ffffff_100%)]',
+  'pdf-reading-room': 'bg-[linear-gradient(180deg,#e6eec9_0%,#f2f6ee_45%,#f7faf3_100%)] text-[#153234]',
+  'profile-social-ribbon': 'bg-[linear-gradient(180deg,#fafdf8_0%,#e8f0ea_100%)] text-[#153234]',
 } as const
 
 export async function TaskListPage({ task, category }: { task: TaskKey; category?: string }) {
@@ -61,29 +63,38 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
   const Icon = taskIcons[task] || LayoutGrid
 
   const isDark = ['image-masonry', 'image-portfolio', 'profile-creator'].includes(layoutKey)
-  const ui = isDark
+  const isNubsantFolio = layoutKey === 'pdf-reading-room' || layoutKey === 'profile-social-ribbon'
+  const ui = isNubsantFolio
     ? {
-        muted: 'text-slate-300',
-        panel: 'border border-white/10 bg-white/6',
-        soft: 'border border-white/10 bg-white/5',
-        input: 'border-white/10 bg-white/6 text-white',
-        button: 'bg-white text-slate-950 hover:bg-slate-200',
+        muted: 'text-[#3a5557]',
+        panel: 'border-2 border-[#7da78c] bg-white/95 shadow-[0_18px_50px_rgba(21,50,52,0.08)]',
+        soft: 'border-2 border-[#c2d099] bg-[#e6eec9]/50',
+        input: 'border-2 border-[#7da78c] bg-white text-[#153234]',
+        button: 'bg-[#35858e] text-white hover:bg-[#2a6d75]',
       }
-    : layoutKey.startsWith('article') || layoutKey.startsWith('sbm')
+    : isDark
       ? {
-          muted: 'text-[#72594a]',
-          panel: 'border border-[#dbc6b6] bg-white/90',
-          soft: 'border border-[#dbc6b6] bg-[#fff8ef]',
-          input: 'border border-[#dbc6b6] bg-white text-[#2f1d16]',
-          button: 'bg-[#2f1d16] text-[#fff4e4] hover:bg-[#452920]',
+          muted: 'text-slate-300',
+          panel: 'border border-white/10 bg-white/6',
+          soft: 'border border-white/10 bg-white/5',
+          input: 'border-white/10 bg-white/6 text-white',
+          button: 'bg-white text-slate-950 hover:bg-slate-200',
         }
-      : {
-          muted: 'text-slate-600',
-          panel: 'border border-slate-200 bg-white',
-          soft: 'border border-slate-200 bg-slate-50',
-          input: 'border border-slate-200 bg-white text-slate-950',
-          button: 'bg-slate-950 text-white hover:bg-slate-800',
-        }
+      : layoutKey.startsWith('article') || layoutKey.startsWith('sbm')
+        ? {
+            muted: 'text-[#72594a]',
+            panel: 'border border-[#dbc6b6] bg-white/90',
+            soft: 'border border-[#dbc6b6] bg-[#fff8ef]',
+            input: 'border border-[#dbc6b6] bg-white text-[#2f1d16]',
+            button: 'bg-[#2f1d16] text-[#fff4e4] hover:bg-[#452920]',
+          }
+        : {
+            muted: 'text-slate-600',
+            panel: 'border border-slate-200 bg-white',
+            soft: 'border border-slate-200 bg-slate-50',
+            input: 'border border-slate-200 bg-white text-slate-950',
+            button: 'bg-slate-950 text-white hover:bg-slate-800',
+          }
 
   return (
     <div className={`min-h-screen ${shellClass}`}>
@@ -233,6 +244,65 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
                 </select>
                 <button type="submit" className={`h-11 rounded-xl px-4 text-sm font-medium ${ui.button}`}>Apply</button>
               </form>
+            </div>
+          </section>
+        ) : null}
+
+        {layoutKey === 'pdf-reading-room' ? (
+          <section className="mb-14 grid gap-8 lg:grid-cols-[1.12fr_0.88fr] lg:items-stretch">
+            <div>
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#35858e]/30 bg-white/80 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#153234]">
+                <FileText className="h-3.5 w-3.5" />
+                PDF reading room
+              </div>
+              <h1 className="text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">{taskConfig?.description || 'PDF library'}</h1>
+              <p className={`mt-5 max-w-2xl text-sm leading-relaxed ${ui.muted}`}>
+                This is the document-first lane: more air around titles, obvious PDF cues, and a calmer path to open or download. It is intentionally different from the people-first profile view.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link href="/search" className={`inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold ${ui.button}`}>
+                  Search documents
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="/profile" className="inline-flex items-center gap-2 rounded-xl border-2 border-[#35858e] bg-white px-5 py-3 text-sm font-semibold text-[#153234]">
+                  See publishers
+                </Link>
+              </div>
+            </div>
+            <div className={`flex flex-col justify-center rounded-3xl p-6 sm:p-8 ${ui.panel}`}>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#35858e]">In this view</p>
+              <ul className={`mt-4 space-y-3 text-sm leading-relaxed ${ui.muted}`}>
+                <li>File-shaped previews so documents read as files, not generic cards.</li>
+                <li>Teal and sage accents to separate actions from content.</li>
+                <li>Extra width for long filenames and report titles.</li>
+              </ul>
+            </div>
+          </section>
+        ) : null}
+
+        {layoutKey === 'profile-social-ribbon' ? (
+          <section className="mb-14">
+            <div className="overflow-hidden rounded-3xl border-2 border-[#7da78c] bg-gradient-to-r from-[#e6eec9] via-white to-[#c2d099]/30 p-px sm:p-1">
+              <div className="rounded-[1.3rem] bg-white/95 px-6 py-8 sm:px-10 sm:py-10">
+                <div className="mb-4 flex flex-wrap items-center gap-1.5">
+                  {[0, 1, 2, 3, 4, 5].map((i) => (
+                    <div
+                      key={i}
+                      className="h-8 w-8 rounded-full border-2 border-white bg-[#7da78c]/35 shadow-sm ring-2 ring-[#c2d099]/50 sm:h-9 sm:w-9"
+                    />
+                  ))}
+                </div>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#35858e]">Social profile lane</p>
+                <h1 className="mt-2 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">{taskConfig?.description || 'Social profiles'}</h1>
+                <p className={`mt-5 max-w-2xl text-sm leading-relaxed ${ui.muted}`}>
+                  Here the layout is tuned for people: a ribbon of faces at the top, then portrait-led cards in the list. Same underlying data as always—just a different visual hierarchy than the PDF index.
+                </p>
+                <div className="mt-5">
+                  <Link href="/pdf" className="text-sm font-semibold text-[#35858e] hover:underline">
+                    Browse shared PDFs →
+                  </Link>
+                </div>
+              </div>
             </div>
           </section>
         ) : null}

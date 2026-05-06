@@ -2,75 +2,81 @@ import type { TaskKey } from '@/lib/site-config'
 
 export const siteContent = {
   navbar: {
-    tagline: 'Independent reading platform',
+    tagline: 'PDF library & social profiles',
   },
   footer: {
-    tagline: 'Stories, resources, and discoverable posts',
+    tagline: 'Shared documents and public profile presence',
   },
   hero: {
-    badge: 'Latest stories and visuals',
-    title: ['A thoughtful home for', 'stories, visuals, and discovery.'],
+    badge: 'Read in the browser or save for later',
+    title: ['Your PDF shelf and', 'your public social profile, together.'],
     description:
-      'Explore fresh articles, image-led posts, and discoverable content across the platform through a calmer and clearer browsing experience.',
+      'Nubsant is built for people who collect documents worth keeping and want a clear public profile to match—without noisy feeds or generic business-directory chrome.',
     primaryCta: {
-      label: 'Read latest stories',
-      href: '/articles',
+      label: 'Open PDF library',
+      href: '/pdf',
     },
     secondaryCta: {
-      label: 'Explore visuals',
-      href: '/images',
+      label: 'Browse social profiles',
+      href: '/profile',
     },
-    searchPlaceholder: 'Search stories, visuals, listings, and more',
+    searchPlaceholder: 'Search PDFs, profiles, and more',
     focusLabel: 'Focus',
-    featureCardBadge: 'latest cover rotation',
-    featureCardTitle: 'Latest posts shape the visual identity of the homepage.',
+    featureCardBadge: 'Fresh uploads',
+    featureCardTitle: 'The homepage pairs file-first browsing with people-first presence.',
     featureCardDescription:
-      'Recent images and stories stay at the center of the experience without changing any core platform behavior.',
+      'Documents stay easy to scan and open; profiles stay human and legible. Core platform behavior is unchanged—only the presentation is tuned for this product.',
   },
   home: {
     metadata: {
-      title: 'Stories, visuals, and discoverable content',
+      title: 'Nubsant — PDF library & social profiles',
       description:
-        'Explore articles, images, listings, and curated posts through a cleaner reading-first experience.',
-      openGraphTitle: 'Stories, visuals, and discoverable content',
+        'Browse a focused PDF library and discover public social profiles in one calm, colorful experience.',
+      openGraphTitle: 'Nubsant — PDF library & social profiles',
       openGraphDescription:
-        'Discover articles, visual posts, and connected content through a calmer reading-first experience.',
-      keywords: ['story platform', 'article site', 'visual content', 'content discovery'],
+        'Open shared PDFs, meet public profiles, and move between files and people without leaving the same site.',
+      keywords: [
+        'PDF library',
+        'read PDF online',
+        'social profile',
+        'public profile',
+        'document sharing',
+        'Nubsant',
+      ],
     },
-    introBadge: 'About the platform',
-    introTitle: 'Built for reading, browsing, and connecting different kinds of content.',
+    introBadge: 'Why this exists',
+    introTitle: 'Two main surfaces: files you can open, and people you can trust.',
     introParagraphs: [
-      'This site brings together article-style reading, visual browsing, and structured discovery so visitors can move naturally between different content types.',
-      'Instead of separating stories, visuals, and supporting resources into disconnected surfaces, the platform keeps them connected in one place with consistent navigation and easier exploration.',
-      'Whether someone starts with a story, an image-led post, a listing, or a resource page, they can keep discovering related content without friction.',
+      'Nubsant keeps long-form documents and profile identity in the same place so visitors are never guessing whether a site is “about files” or “about people.”',
+      'The PDF area reads like a reading room: big previews, clear titles, and a calm path to open or download. The social profile area reads like a meet-the-person card: face-forward layout, short bios, and clear links.',
+      'Other task types in the system stay available by URL and search; the main navigation here highlights exactly what this product is for.',
     ],
-    sideBadge: 'At a glance',
+    sideBadge: 'In one visit you can',
     sidePoints: [
-      'Reading-first homepage with stronger emphasis on stories and imagery.',
-      'Connected sections for articles, visuals, listings, and supporting resources.',
-      'Cleaner browsing rhythm designed to make exploration feel easier.',
-      'Lightweight interactions that keep the experience fast and readable.',
+      'Open shared PDFs in a clear, file-first layout.',
+      'See who is behind the work with social-style profile cards.',
+      'Search across both without switching to a different product skin.',
     ],
     primaryLink: {
-      label: 'Browse articles',
-      href: '/articles',
+      label: 'Go to PDF library',
+      href: '/pdf',
     },
     secondaryLink: {
-      label: 'See visuals',
-      href: '/images',
+      label: 'View profiles',
+      href: '/profile',
     },
   },
   cta: {
-    badge: 'Start exploring',
-    title: 'Explore articles, visuals, and resources through one connected experience.',
+    badge: 'Get started',
+    title: 'Publish documents and a profile that feel like one brand.',
     description:
-      'Move between articles, image-led posts, listings, and resources through one clearer and more connected visual system.',
+      'Create an account to upload PDFs, tune your public profile, and help visitors connect files to the people who share them.',
     primaryCta: {
-      label: 'Get Started Free',
+      label: 'Create account',
       href: '/register',
     },
     secondaryCta: {
-      label: 'Contact Sales',
+      label: 'Contact us',
       href: '/contact',
     },
   },
@@ -96,16 +102,16 @@ export const taskPageMetadata: Record<Exclude<TaskKey, 'comment' | 'org' | 'soci
     description: 'Explore image-led posts, galleries, and visual stories from across the platform.',
   },
   profile: {
-    title: 'Profiles and public pages',
-    description: 'Discover public profiles, brand pages, and identity-focused posts in one place.',
+    title: 'Social profiles',
+    description: 'Discover public profiles, bios, and the people behind shared PDFs and posts.',
   },
   sbm: {
     title: 'Curated links and saved resources',
     description: 'Browse useful links, saved references, and curated resources organized for discovery.',
   },
   pdf: {
-    title: 'PDFs and downloadable resources',
-    description: 'Open reports, documents, and downloadable resources shared across the platform.',
+    title: 'PDF library',
+    description: 'Open, browse, and download shared PDFs in a file-first reading layout.',
   },
 }
 
@@ -166,16 +172,16 @@ export const taskIntroCopy: Record<
     ],
   },
   profile: {
-    title: 'Profiles, identities, and public pages',
+    title: 'Social profiles: people behind the work',
     paragraphs: [
-      'Profiles capture the identity behind a business, creator, brand, or project and help visitors understand who is behind the content they are exploring.',
-      'These pages work as trust anchors across the site and connect naturally with stories, listings, documents, and other post types.',
-      'Browse profiles to understand people and brands more clearly, then continue into related content from the same source.',
+      'This lane is the social side of Nubsant—public profiles with a card-style layout, photo-forward headers, and short, scannable bios.',
+      'Use it to see who publishes PDFs, how they describe their work, and how to follow or connect. It is built to feel more like a meet-card than a corporate directory page.',
+      'Start from a profile to jump into that person’s documents or other posts without losing the sense of who you are learning from.',
     ],
     links: [
-      { label: 'Open listings', href: '/listings' },
-      { label: 'Read articles', href: '/articles' },
-      { label: 'Browse images', href: '/images' },
+      { label: 'Open PDF library', href: '/pdf' },
+      { label: 'Search the site', href: '/search' },
+      { label: 'Create account', href: '/register' },
     ],
   },
   sbm: {
@@ -192,16 +198,16 @@ export const taskIntroCopy: Record<
     ],
   },
   pdf: {
-    title: 'PDFs, documents, and downloadable files',
+    title: 'PDF reading room',
     paragraphs: [
-      'The PDF library hosts reports, guides, downloadable files, and longer-form document resources that support reading and discovery.',
-      'These resources work alongside stories, listings, and profiles, helping document-style content stay connected to the rest of the platform.',
-      'Browse by category to find relevant files quickly, then continue into related sections when you want more context.',
+      'This is Nubsant’s file-first home: a PDF library designed for clear browsing, strong titles, and obvious open-or-download actions.',
+      'The layout is closer to a document shelf than a social feed—more whitespace, calmer type, and a rhythm that helps you pick the right file quickly.',
+      'From here you can jump to the author’s social profile when you want context about who published the work.',
     ],
     links: [
-      { label: 'Read articles', href: '/articles' },
-      { label: 'See listings', href: '/listings' },
-      { label: 'Explore profiles', href: '/profile' },
+      { label: 'Social profiles', href: '/profile' },
+      { label: 'Search', href: '/search' },
+      { label: 'Sign in', href: '/login' },
     ],
   },
   social: {
