@@ -19,13 +19,14 @@ const taskIcons: Record<TaskKey, any> = {
 }
 
 const footerLinks = {
-  platform: SITE_CONFIG.tasks.filter((task) => task.enabled).map((task) => ({
+  platform: SITE_CONFIG.tasks.filter((task) => task.enabled && task.key !== 'profile').map((task) => ({
     name: task.label,
     href: task.route,
     icon: taskIcons[task.key] || LayoutGrid,
   })),
   company: [
     { name: 'About', href: '/about' },
+    { name: 'Contact Us', href: '/contact' },
     { name: 'Team', href: '/team' },
     { name: 'Careers', href: '/careers' },
     { name: 'Blog', href: '/blog' },
@@ -70,7 +71,7 @@ export function Footer() {
             <p className="mt-2 max-w-md text-sm text-[#3a5557]/90">{SITE_CONFIG.description}</p>
           </div>
           <div className="flex flex-wrap gap-2 sm:gap-3">
-            {enabledTasks.slice(0, 6).map((task) => (
+            {enabledTasks.filter((task) => task.key !== 'profile').slice(0, 6).map((task) => (
               <Link
                 key={task.key}
                 href={task.route}
@@ -79,6 +80,15 @@ export function Footer() {
                 {task.label}
               </Link>
             ))}
+            <Link href="/about" className="rounded-full border-2 border-[#7da78c] bg-white/90 px-3 py-2 text-sm font-medium text-[#153234] shadow-sm transition hover:border-[#35858e] hover:bg-white">
+              About
+            </Link>
+            <Link href="/contact" className="rounded-full border-2 border-[#7da78c] bg-white/90 px-3 py-2 text-sm font-medium text-[#153234] shadow-sm transition hover:border-[#35858e] hover:bg-white">
+              Contact Us
+            </Link>
+            <Link href="/help" className="rounded-full border-2 border-[#7da78c] bg-white/90 px-3 py-2 text-sm font-medium text-[#153234] shadow-sm transition hover:border-[#35858e] hover:bg-white">
+              Help Center
+            </Link>
             <Link href="/search" className="rounded-full border-2 border-dashed border-[#7da78c] px-3 py-2 text-sm font-medium text-[#3a5557] hover:border-[#35858e]">
               Search
             </Link>
