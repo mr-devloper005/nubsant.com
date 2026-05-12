@@ -173,7 +173,7 @@ function DocumentProfileHome({ primaryTask, enabledTasks, pdfPosts, profilePosts
 }) {
   const shelf = pdfPosts.slice(0, 4)
   const people = profilePosts.slice(0, 4)
-  const emphasis = [primaryTask, ...enabledTasks.filter((t) => t.key !== primaryTask?.key)].filter(Boolean) as EnabledTask[]
+  const emphasis = [primaryTask, ...enabledTasks.filter((t) => t.key !== primaryTask?.key && t.key !== 'profile')].filter(Boolean) as EnabledTask[]
 
   return (
     <main>
@@ -186,10 +186,10 @@ function DocumentProfileHome({ primaryTask, enabledTasks, pdfPosts, profilePosts
                 style={{ background: 'rgb(194 208 153 / 0.5)' }}
               >
                 <BookOpen className="h-3.5 w-3.5" />
-                PDF + social profile
+                PDF library
               </span>
               <h1 className={`mt-7 max-w-3xl font-serif text-4xl font-semibold leading-[1.1] tracking-[-0.04em] sm:text-5xl lg:text-[3.1rem] ${docTone.title}`}>
-                A calm shelf for files and a friendly card for people.
+                A calm shelf for files and documents.
               </h1>
               <p className={`mt-6 max-w-xl text-base leading-relaxed sm:text-lg ${docTone.muted}`}>{SITE_CONFIG.description}</p>
               <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -199,13 +199,6 @@ function DocumentProfileHome({ primaryTask, enabledTasks, pdfPosts, profilePosts
                 >
                   {primaryTask?.label || 'PDF library'}
                   <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/profile"
-                  className={`inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#35858e] bg-white px-7 py-3.5 text-sm font-semibold text-[#153234] transition hover:bg-[#e6eec9]/60`}
-                >
-                  <Users className="h-4 w-4" />
-                  Social profiles
                 </Link>
                 <Link href="/search" className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-semibold ${docTone.muted} underline decoration-[#7da78c] underline-offset-4`}>
                   Search
@@ -294,42 +287,13 @@ function DocumentProfileHome({ primaryTask, enabledTasks, pdfPosts, profilePosts
 
       <section className={`${docTone.shell} border-t border-[#7da78c]/25`}>
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#3a5557]">People-first</p>
-              <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-[#153234]">Social profile cards</h2>
-              <p className={`mt-2 max-w-xl text-sm ${docTone.muted}`}>
-                A different surface than the PDF grid: round portraits, two-line bios, and connection cues—so “who is sharing this?” is always obvious.
-              </p>
-            </div>
-            <Link href="/profile" className="text-sm font-semibold text-[#35858e] underline-offset-4 hover:underline">
-              Open profiles
-            </Link>
-          </div>
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {people.length
-              ? people.map((post) => (
-                  <TaskPostCard key={post.id} post={post} href={getTaskHref('profile', post.slug)} taskKey="profile" />
-                ))
-              : (
-                <div className={`col-span-full rounded-3xl border-2 border-[#7da78c] bg-white p-8 text-center md:col-span-2 ${docTone.muted}`}>
-                  <Users className="mx-auto h-10 w-10 text-[#7da78c]" />
-                  <p className="mt-3 text-sm font-medium text-[#153234]">Profile posts will appear here when available.</p>
-                </div>
-                )}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-t border-[#7da78c]/20 bg-white/70">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className={`${docTone.soft} mx-auto max-w-4xl rounded-3xl p-8 sm:p-10`}>
+          <div className={`mx-auto max-w-4xl rounded-3xl p-8 sm:p-10 ${docTone.soft}`}>
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#3a5557]">Clarity, not noise</p>
-                <h3 className="mt-2 text-2xl font-semibold text-[#153234]">Same platform tasks—tuned for documents and public presence.</h3>
+                <h3 className="mt-2 text-2xl font-semibold text-[#153234]">Same platform tasks—tuned for documents.</h3>
                 <p className={`mt-3 text-sm leading-relaxed ${docTone.muted}`}>
-                  You can still reach other content types from search and direct links; the homepage keeps the story simple: files here, people here.
+                  You can still reach other content types from search and direct links; the homepage keeps the story simple: files here.
                 </p>
               </div>
               <Link
@@ -443,33 +407,15 @@ function DirectoryHome({ primaryTask, enabledTasks, listingPosts, classifiedPost
       </section>
 
       <section className={`${tone.shell}`}>
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[0.92fr_1.08fr] lg:px-8">
-          <div className={`rounded-[2rem] p-7 ${tone.panel}`}>
+        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+          <div className={`mx-auto max-w-3xl rounded-[2rem] p-7 ${tone.panel}`}>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">What makes this different</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">Built like a business directory, not a recolored content site.</h2>
             <ul className={`mt-6 space-y-3 text-sm leading-7 ${tone.muted}`}>
               <li>Search-first hero instead of a magazine headline.</li>
               <li>Action-oriented listing cards with trust metadata.</li>
-              <li>Support lanes for offers, businesses, and profiles.</li>
+              <li>Support lanes for offers and businesses.</li>
             </ul>
-          </div>
-          <div className="grid gap-4 md:grid-cols-2">
-            {(profilePosts.length ? profilePosts : classifiedPosts).slice(0, 4).map((post) => {
-              const meta = getPostMeta(post)
-              const taskKey = resolveTaskKey((post as { task?: string }).task, profilePosts.length ? 'profile' : 'classified')
-              return (
-                <Link key={post.id} href={getTaskHref(taskKey, post.slug)} className={`overflow-hidden rounded-[1.8rem] ${tone.panel}`}>
-                  <div className="relative h-44 overflow-hidden">
-                    <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
-                  </div>
-                  <div className="p-5">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.24em] opacity-70">{meta.category || (post as { task?: string }).task || 'Profile'}</p>
-                    <h3 className="mt-2 text-xl font-semibold">{post.title}</h3>
-                    <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{post.summary || 'Quick access to local information and related surfaces.'}</p>
-                  </div>
-                </Link>
-              )
-            })}
           </div>
         </div>
       </section>
@@ -575,9 +521,6 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
                 Open gallery
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/profile" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.actionAlt}`}>
-                Meet creators
-              </Link>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
@@ -595,22 +538,11 @@ function VisualHome({ primaryTask, imagePosts, profilePosts, articlePosts }: { p
           </div>
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className={`rounded-[2rem] p-7 ${tone.panel}`}>
+        <div className="mt-12">
+          <div className={`mx-auto max-w-3xl rounded-[2rem] p-7 ${tone.panel}`}>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Visual notes</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">Larger media surfaces, fewer boxes, stronger pacing.</h2>
-            <p className={`mt-4 max-w-2xl text-sm leading-8 ${tone.muted}`}>This product avoids business-directory density and publication framing. The homepage behaves more like a visual board, with profile surfaces and imagery leading the experience.</p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {creators.map((post) => (
-              <Link key={post.id} href={`/profile/${post.slug}`} className={`rounded-[1.8rem] p-5 ${tone.soft}`}>
-                <div className="relative h-40 overflow-hidden rounded-[1.2rem]">
-                  <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
-                </div>
-                <h3 className="mt-4 text-lg font-semibold">{post.title}</h3>
-                <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>{post.summary || 'Creator profile and visual identity surface.'}</p>
-              </Link>
-            ))}
+            <p className={`mt-4 max-w-2xl text-sm leading-8 ${tone.muted}`}>This product avoids business-directory density and publication framing. The homepage behaves more like a visual board, with imagery leading the experience.</p>
           </div>
         </div>
       </section>
@@ -641,9 +573,6 @@ function CurationHome({ primaryTask, bookmarkPosts, profilePosts, articlePosts }
                 Open collections
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/profile" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold ${tone.actionAlt}`}>
-                Explore curators
-              </Link>
             </div>
           </div>
 
@@ -658,22 +587,11 @@ function CurationHome({ primaryTask, bookmarkPosts, profilePosts, articlePosts }
           </div>
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className={`rounded-[2rem] p-7 ${tone.panel}`}>
+        <div className="mt-12">
+          <div className={`mx-auto max-w-3xl rounded-[2rem] p-7 ${tone.panel}`}>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] opacity-70">Why this feels different</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">More like saved boards and reading shelves than a generic post feed.</h2>
             <p className={`mt-4 max-w-2xl text-sm leading-8 ${tone.muted}`}>The structure is calmer, the cards are less noisy, and the page encourages collecting and returning instead of forcing everything into a fast-scrolling list.</p>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {people.map((post) => (
-              <Link key={post.id} href={`/profile/${post.slug}`} className={`rounded-[1.8rem] p-5 ${tone.soft}`}>
-                <div className="relative h-32 overflow-hidden rounded-[1.2rem]">
-                  <ContentImage src={getPostImage(post)} alt={post.title} fill className="object-cover" />
-                </div>
-                <h3 className="mt-4 text-lg font-semibold">{post.title}</h3>
-                <p className={`mt-2 text-sm leading-7 ${tone.muted}`}>Curator profile, saved resources, and collection notes.</p>
-              </Link>
-            ))}
           </div>
         </div>
       </section>
